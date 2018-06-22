@@ -2,20 +2,25 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using Newtonsoft.Json.Linq;
 
 namespace Isen.desrumaux.Library
 {
+    /// <summary>
+    /// Noeud d'un arbre
+    /// </summary>
+    /// <typeparam name="T">Type de donnée stockée dans le noeud</typeparam>
     public class Node<T> : INode<T>, IEquatable<INode<T>>
     {
         /// <inheritdoc />
         public T Value { get; set; }
-        
+
         /// <inheritdoc />
         public Guid Id { get; }
-        
+
         /// <inheritdoc />
         public INode<T> parent { get; set; }
-        
+
         /// <inheritdoc />
         public List<INode<T>> children { get; set; }
 
@@ -155,6 +160,49 @@ namespace Isen.desrumaux.Library
             return sb.ToString();
         }
 
-        
+        /// <inheritdoc />
+        public JObject SerializeJson()
+        {
+            var jsonObject = new JObject();
+
+            if (Value != null)
+            {
+                jsonObject.Add(new JProperty("value", Value));
+
+                if (children.Count != 0)
+                {
+                    var jsonArray = new JArray();
+                    foreach (var child in children)
+                    {
+                        jsonArray.Add(child.SerializeJson());
+                    }
+
+                    jsonObject.Add(new JProperty("children", jsonArray));
+                }
+            }
+
+            return jsonObject;
+        }
+
+        /// <inheritdoc />
+        public void DeserializeJson(JToken jsonObjectToken)
+        {
+            if (jsonObjectToken["value"] != null)
+            {
+                Value = jsonObjectToken["value"].ToObject<T>();
+            }
+
+            if (jsonObjectToken["children"] != null)
+            {
+                var childs = jsonObjectToken["children"].Children().ToList();
+                foreach (var jsonToken in childs)
+                {
+                    var nodeChild = new Node<T>();
+
+                    nodeChild.DeserializeJson(jsonToken);
+                    AddChildNode(nodeChild);
+                }
+            }
+        }
     }
 }

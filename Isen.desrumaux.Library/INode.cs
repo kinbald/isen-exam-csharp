@@ -1,8 +1,13 @@
 ﻿using System;
 using System.Collections.Generic;
+using Newtonsoft.Json.Linq;
 
 namespace Isen.desrumaux.Library
 {
+    /// <summary>
+    /// Interface permettant de gérer des noeuds d'un arbre
+    /// </summary>
+    /// <typeparam name="T">Type de données stockées dans le noeud</typeparam>
     public interface INode<T>
     {
         /// <summary>
@@ -67,5 +72,17 @@ namespace Isen.desrumaux.Library
         /// <param name="node">Objet à chercher</param>
         /// <returns>Noeud trouvé ou Null</returns>
         INode<T> FindTraversing(INode<T> node);
+
+        /// <summary>
+        /// Permet de sérialiser les données contenues dans le noeud (valeur + enfants)
+        /// </summary>
+        /// <returns>Objet json</returns>
+        JObject SerializeJson();
+
+        /// <summary>
+        /// Permet de désérialiser les données provenant d'un json vers un arbre de noeud d'un type défini
+        /// </summary>
+        /// <param name="jsonObjectToken">Fichier json</param>
+        void DeserializeJson(JToken jsonObjectToken);
     }
 }

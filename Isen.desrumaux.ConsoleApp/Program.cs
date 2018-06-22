@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using Isen.desrumaux.Library;
+using Newtonsoft.Json.Linq;
 
 namespace Isen.desrumaux.ConsoleApp
 {
@@ -18,20 +19,33 @@ namespace Isen.desrumaux.ConsoleApp
             var Item113 = new Node<string>("Item113");
             var Item12 = new Node<string>("Item12");
             var Item13 = new Node<string>("Item13");
-            
+
             Item1.AddChildNode(Item11);
             Item1.AddChildNode(Item12);
             Item1.AddChildNode(Item13);
-            
+
             Item11.AddChildNode(Item111);
             Item11.AddChildNode(Item112);
             Item11.AddChildNode(Item113);
-            
+
             Item111.AddChildNode(Item1111);
             Item112.AddChildNode(Item1121);
             Item112.AddChildNode(Item1122);
-            
-            
+
+            Console.WriteLine("Recherche d'élément : " + System.Environment.NewLine + Item11.FindTraversing(Item112));
+
+            Item1.RemoveChildNode(Item11);
+
+            Console.WriteLine(Item1);
+
+            JObject json = Item1.SerializeJson();
+
+            var deserialize = new Node<string>();
+
+            deserialize.DeserializeJson(json);
+
+            Console.WriteLine(deserialize);
+
             Item1.RemoveChildNode(Item11);
 
             Console.WriteLine(Item1);
