@@ -14,5 +14,13 @@ namespace Isen.desrumaux.Library
         List<INode> children { get; set; }
         
         int Depth { get; }
+
+        void AddChildNode(Node node);
+
+        void AddNodes(IEnumerable<Node> nodeList);
+
+        void RemoveChildNode(Guid id);
+        
+        void RemoveChildNode(INode node);
     }
 }

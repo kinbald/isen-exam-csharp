@@ -1,5 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Linq;
+using System.Text;
 
 namespace Isen.desrumaux.Library
 {
@@ -12,6 +14,49 @@ namespace Isen.desrumaux.Library
         public int Depth
         {
             get => parent?.Depth + 1 ?? 0;
+        }
+
+        public Node(string value)
+        {
+            Value = value;
+            Id = Guid.NewGuid();
+            children = new List<INode>();
+        }
+
+        public void AddChildNode(Node node)
+        {
+            node.parent = this;
+            children.Add(node);
+        }
+
+        public void AddNodes(IEnumerable<Node> nodeList)
+        {
+            foreach (var node in nodeList)
+            {
+                AddChildNode(node);
+            }
+        }
+
+        public void RemoveChildNode(Guid id)
+        {
+            foreach (var node in children.ToList())
+            {
+                if (node.Id.Equals(id))
+                {
+                    children.Remove(node);
+                }
+            }
+        }
+
+        public void RemoveChildNode(INode node)
+        {
+            foreach (var child in children.ToList())
+            {
+                if (child.Equals(node))
+                {
+                    children.Remove(child);
+                }
+            }
         }
 
         public bool Equals(Node other)
@@ -35,6 +80,13 @@ namespace Isen.desrumaux.Library
             {
                 return ((Value != null ? Value.GetHashCode() : 0) * 397) ^ Id.GetHashCode();
             }
+        }
+
+        public override string ToString()
+        {
+            var sb = new StringBuilder();
+            sb.Append($"{Value} : {Id}");
+            return sb.ToString();
         }
     }
 }
