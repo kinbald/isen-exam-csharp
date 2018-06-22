@@ -3,38 +3,69 @@ using System.Collections.Generic;
 
 namespace Isen.desrumaux.Library
 {
-    public interface INode
+    public interface INode<T>
     {
-        string Value { get; set; }
+        /// <summary>
+        /// Données du noeud
+        /// </summary>
+        T Value { get; set; }
         
+        /// <summary>
+        /// Id du noeud
+        /// </summary>
         Guid Id { get; }
         
-        INode parent { get; set; }
+        /// <summary>
+        /// Lien vers le parent
+        /// </summary>
+        INode<T> parent { get; set; }
         
-        List<INode> children { get; set; }
+        /// <summary>
+        /// Liste des enfants du noeud
+        /// </summary>
+        List<INode<T>> children { get; set; }
         
+        /// <summary>
+        /// Profondeur du noeud
+        /// </summary>
         int Depth { get; }
 
-        void AddChildNode(Node node);
+        /// <summary>
+        /// Permet d'ajouter un noeud dans la liste des enfants
+        /// </summary>
+        /// <param name="node">Noeud à définir comme enfant du noeud courant</param>
+        void AddChildNode(INode<T> node);
 
-        void AddNodes(IEnumerable<Node> nodeList);
+        /// <summary>
+        /// Permet d'ajouter plusieurs noeuds en même temps à la liste des enfants
+        /// </summary>
+        /// <param name="nodeList">Liste des noeuds à ajouter comme enfants</param>
+        void AddNodes(IEnumerable<INode<T>> nodeList);
 
+        /// <summary>
+        /// Suppression d'un noeud par son identifiant
+        /// </summary>
+        /// <param name="id">Identifiant du noeud à supprimer</param>
         void RemoveChildNode(Guid id);
         
-        void RemoveChildNode(INode node);
+        /// <summary>
+        /// Suprression d'un noeud par recherche de l'objet
+        /// </summary>
+        /// <param name="node">Noeud à supprimer</param>
+        void RemoveChildNode(INode<T> node);
         
         /// <summary>
         /// Trouve un noeud dans la liste des enfants
         /// </summary>
         /// <param name="id">Id du noeud à chercher</param>
         /// <returns>Noeud trouvé ou Null</returns>
-        Node FindTraversing(Guid id);
+        INode<T> FindTraversing(Guid id);
         
         /// <summary>
         /// Trouve un noeud dans la liste des enfants
         /// </summary>
         /// <param name="node">Objet à chercher</param>
         /// <returns>Noeud trouvé ou Null</returns>
-        Node FindTraversing(Node node);
+        INode<T> FindTraversing(INode<T> node);
     }
 }

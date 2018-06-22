@@ -8,16 +8,16 @@ namespace Isen.desrumaux.ConsoleApp
     {
         static void Main(string[] args)
         {
-            var Item1 = new Node("Item1");
-            var Item11 = new Node("Item11");
-            var Item111 = new Node("Item111");
-            var Item1111 = new Node("Item1111");
-            var Item112 = new Node("Item112");
-            var Item1121 = new Node("Item1121");
-            var Item1122 = new Node("Item1122");
-            var Item113 = new Node("Item113");
-            var Item12 = new Node("Item12");
-            var Item13 = new Node("Item13");
+            var Item1 = new Node<string>("Item1");
+            var Item11 = new Node<string>("Item11");
+            var Item111 = new Node<string>("Item111");
+            var Item1111 = new Node<string>("Item1111");
+            var Item112 = new Node<string>("Item112");
+            var Item1121 = new Node<string>("Item1121");
+            var Item1122 = new Node<string>("Item1122");
+            var Item113 = new Node<string>("Item113");
+            var Item12 = new Node<string>("Item12");
+            var Item13 = new Node<string>("Item13");
             
             Item1.AddChildNode(Item11);
             Item1.AddChildNode(Item12);
@@ -30,6 +30,9 @@ namespace Isen.desrumaux.ConsoleApp
             Item111.AddChildNode(Item1111);
             Item112.AddChildNode(Item1121);
             Item112.AddChildNode(Item1122);
+            
+            
+            Item1.RemoveChildNode(Item11);
 
             Console.WriteLine(Item1);
         }

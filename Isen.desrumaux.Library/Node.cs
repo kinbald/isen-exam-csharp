@@ -5,32 +5,40 @@ using System.Text;
 
 namespace Isen.desrumaux.Library
 {
-    public class Node : INode, IEquatable<Node>
+    public class Node<T> : INode<T>, IEquatable<INode<T>>
     {
-        public string Value { get; set; }
+        /// <inheritdoc />
+        public T Value { get; set; }
+        
+        /// <inheritdoc />
         public Guid Id { get; }
-        public INode parent { get; set; }
-        public List<INode> children { get; set; }
+        
+        /// <inheritdoc />
+        public INode<T> parent { get; set; }
+        
+        /// <inheritdoc />
+        public List<INode<T>> children { get; set; }
 
-        public int Depth
-        {
-            get => parent?.Depth + 1 ?? 0;
-        }
+        /// <inheritdoc />
+        public int Depth => parent?.Depth + 1 ?? 0;
 
-        public Node(string value)
+        /// <inheritdoc />
+        public Node(T value = default(T))
         {
             Value = value;
             Id = Guid.NewGuid();
-            children = new List<INode>();
+            children = new List<INode<T>>();
         }
 
-        public void AddChildNode(Node node)
+        /// <inheritdoc />
+        public void AddChildNode(INode<T> node)
         {
             node.parent = this;
             children.Add(node);
         }
 
-        public void AddNodes(IEnumerable<Node> nodeList)
+        /// <inheritdoc />
+        public void AddNodes(IEnumerable<INode<T>> nodeList)
         {
             foreach (var node in nodeList)
             {
@@ -38,6 +46,7 @@ namespace Isen.desrumaux.Library
             }
         }
 
+        /// <inheritdoc />
         public void RemoveChildNode(Guid id)
         {
             foreach (var node in children.ToList())
@@ -49,7 +58,8 @@ namespace Isen.desrumaux.Library
             }
         }
 
-        public void RemoveChildNode(INode node)
+        /// <inheritdoc />
+        public void RemoveChildNode(INode<T> node)
         {
             foreach (var child in children.ToList())
             {
@@ -61,7 +71,7 @@ namespace Isen.desrumaux.Library
         }
 
         /// <inheritdoc />
-        public Node FindTraversing(Guid id)
+        public INode<T> FindTraversing(Guid id)
         {
             if (Id == id)
             {
@@ -81,7 +91,7 @@ namespace Isen.desrumaux.Library
         }
 
         /// <inheritdoc />
-        public Node FindTraversing(Node node)
+        public INode<T> FindTraversing(INode<T> node)
         {
             if (Equals(node))
             {
@@ -100,21 +110,24 @@ namespace Isen.desrumaux.Library
             return null;
         }
 
-        public bool Equals(Node other)
+        /// <inheritdoc />
+        public bool Equals(INode<T> other)
         {
             if (ReferenceEquals(null, other)) return false;
             if (ReferenceEquals(this, other)) return true;
-            return string.Equals(Value, other.Value) && Id.Equals(other.Id);
+            return Equals(Value, other.Value) && Id.Equals(other.Id);
         }
 
+        /// <inheritdoc />
         public override bool Equals(object obj)
         {
             if (ReferenceEquals(null, obj)) return false;
             if (ReferenceEquals(this, obj)) return true;
             if (obj.GetType() != this.GetType()) return false;
-            return Equals((Node) obj);
+            return Equals((Node<T>) obj);
         }
 
+        /// <inheritdoc />
         public override int GetHashCode()
         {
             unchecked
@@ -123,6 +136,7 @@ namespace Isen.desrumaux.Library
             }
         }
 
+        /// <inheritdoc />
         public override string ToString()
         {
             var sb = new StringBuilder();
@@ -137,7 +151,10 @@ namespace Isen.desrumaux.Library
                 sb.AppendLine();
                 sb.Append($"{child}");
             }
+
             return sb.ToString();
         }
+
+        
     }
 }
