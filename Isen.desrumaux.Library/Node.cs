@@ -126,7 +126,17 @@ namespace Isen.desrumaux.Library
         public override string ToString()
         {
             var sb = new StringBuilder();
-            sb.Append($"{Value} : {Id}");
+            for (int i = 0; i < Depth; i++)
+            {
+                sb.Append("|-");
+            }
+
+            sb.Append($"{Value} {{{Id}}}");
+            foreach (var child in children)
+            {
+                sb.AppendLine();
+                sb.Append($"{child}");
+            }
             return sb.ToString();
         }
     }
