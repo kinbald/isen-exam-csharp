@@ -11,6 +11,7 @@ namespace Isen.desrumaux.Library
         public Guid Id { get; }
         public INode parent { get; set; }
         public List<INode> children { get; set; }
+
         public int Depth
         {
             get => parent?.Depth + 1 ?? 0;
@@ -57,6 +58,46 @@ namespace Isen.desrumaux.Library
                     children.Remove(child);
                 }
             }
+        }
+
+        /// <inheritdoc />
+        public Node FindTraversing(Guid id)
+        {
+            if (Id == id)
+            {
+                return this;
+            }
+
+            if (children != null)
+            {
+                foreach (var child in children)
+                {
+                    var elemenTraversing = child.FindTraversing(id);
+                    if (elemenTraversing != null) return elemenTraversing;
+                }
+            }
+
+            return null;
+        }
+
+        /// <inheritdoc />
+        public Node FindTraversing(Node node)
+        {
+            if (Equals(node))
+            {
+                return this;
+            }
+
+            if (children != null)
+            {
+                foreach (var child in children)
+                {
+                    var elemenTraversing = child.FindTraversing(node);
+                    if (elemenTraversing != null) return elemenTraversing;
+                }
+            }
+
+            return null;
         }
 
         public bool Equals(Node other)

@@ -10,11 +10,14 @@ namespace Isen.desrumaux.ConsoleApp
             var bonjour = new Node("Bonjour");
             var hello = new Node("Hello");
             var hi = new Node("Hi");
-            
-            
+            var ciao = new Node("Ciao");
+
+
             bonjour.AddChildNode(hello);
             bonjour.AddChildNode(hi);
-            
+
+            hi.AddChildNode(ciao);
+
             Console.WriteLine(bonjour);
             Console.WriteLine(bonjour.Depth);
 
@@ -23,7 +26,9 @@ namespace Isen.desrumaux.ConsoleApp
                 Console.WriteLine(bonjourChild);
                 Console.WriteLine(bonjourChild.Depth);
             }
-            
+
+            Console.WriteLine($"Noeud trouvé : {bonjour.FindTraversing(ciao)}");
+
             bonjour.RemoveChildNode(hello);
 
             foreach (var bonjourChild in bonjour.children)

@@ -22,5 +22,19 @@ namespace Isen.desrumaux.Library
         void RemoveChildNode(Guid id);
         
         void RemoveChildNode(INode node);
+        
+        /// <summary>
+        /// Trouve un noeud dans la liste des enfants
+        /// </summary>
+        /// <param name="id">Id du noeud à chercher</param>
+        /// <returns>Noeud trouvé ou Null</returns>
+        Node FindTraversing(Guid id);
+        
+        /// <summary>
+        /// Trouve un noeud dans la liste des enfants
+        /// </summary>
+        /// <param name="node">Objet à chercher</param>
+        /// <returns>Noeud trouvé ou Null</returns>
+        Node FindTraversing(Node node);
     }
 }
